@@ -1,0 +1,27 @@
+import pymongo
+
+connection=pymongo.MongoClient("mongodb://santhiya1204:santhiya1204@ac-dqtoutk-shard-00-00.oeojj5f.mongodb.net:27017,ac-dqtoutk-shard-00-01.oeojj5f.mongodb.net:27017,ac-dqtoutk-shard-00-02.oeojj5f.mongodb.net:27017/?ssl=true&replicaSet=atlas-6lfbkt-shard-0&authSource=admin&retryWrites=true&w=majority")
+
+emp=connection["work"]
+
+sample_m=connection["sample_mflix"]
+
+sample_mf=sample_m["movies"]
+
+for i in sample_mf.find({"$and":[{"genres":{"$in":["Short","Comedy","Thriller","Romance"]}},{"awards.wins":{"$gte":1}},{"imdb.rating":{"$gte":7}},{"tomatoes.fresh":{"$gte":3.3}}]}
+,{"_id":0,"title":1,"languages":1,"year":1}):
+    
+    print(i)
+    
+    A=[]
+
+for i in sample_mf.find({"$and":[{"genres":{"$in":["Short","Comedy","Thriller","Romance"]}},{"awards.wins":{"$gte":1}},{"imdb.rating":{"$gte":7}},{"tomatoes.fresh":{"$gte":3.3}}]}
+,{"_id":0,"title":1,"languages":1,"year":1}):
+
+    A.append(i) 
+    
+   import pandas as pd
+   
+   df = pd.DataFrame(A)
+   
+   df.to_csv('samplemflix.csv')
