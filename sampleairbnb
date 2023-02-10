@@ -1,0 +1,17 @@
+import pymongo
+
+connection=pymongo.MongoClient("mongodb://santhiya1204:santhiya1204@ac-dqtoutk-shard-00-00.oeojj5f.mongodb.net:27017,ac-dqtoutk-shard-00-01.oeojj5f.mongodb.net:27017,ac-dqtoutk-shard-00-02.oeojj5f.mongodb.net:27017/?ssl=true&replicaSet=atlas-6lfbkt-shard-0&authSource=admin&retryWrites=true&w=majority")
+
+sampleAir=connection["sample_airbnb"]
+
+samA=sampleAir["listingsAndReviews"]
+
+C=[]
+for i in samA.find({"$and":[{"amenities":"Wifi"},{"monthly_price":{"$lt":3000}},{"property_type":"House"}]},{"_id":1,"name":1,"listing_url":1}):
+  C.append(i)
+
+import pandas as pd
+
+df2=pd.DataFrame(C)
+
+df2.to_csv("sampleAirbnb.csv")
